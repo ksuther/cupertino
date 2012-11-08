@@ -7,6 +7,8 @@ class String
   include Term::ANSIColor
 end
 
+require 'yaml'
+
 module Cupertino
   module ProvisioningPortal
     module Helpers
@@ -32,7 +34,26 @@ module Cupertino
 
         @agent
       end
+
+      def config
+        unless @config
+            @config = YAML.load_file(Cupertino::CONFIG)
+        end
+        
+        @config
+      end
+
+      def save_config
+        File.open(Cupertino::CONFIG, 'w') do |out|
+          YAML.dump(config, out)
+        end
+      end
       
+      def current_account
+        current = config['current']
+        config['accounts'][current] || current
+      end
+
       def pluralize(n, singular, plural = nil)
         n.to_i == 1 ? "1 #{singular}" : "#{n} #{plural || singular + 's'}"
       end
