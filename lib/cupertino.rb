@@ -1,5 +1,5 @@
 module Cupertino
-  VERSION = '0.6.0'
+  VERSION = '0.7.1'
   HOSTNAME = "developer.apple.com"
   CONFIG = File.expand_path("~/.cupertino")
 end
