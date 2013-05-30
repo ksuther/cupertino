@@ -26,8 +26,14 @@ module Cupertino
             end
 
             def team
-              teams = page.form_with(:name => 'saveTeamSelection').field_with(:name => 'memberDisplayId').options.collect(&:text)
-              @team ||= choose "Select a team:", *teams
+              teams_by_name = {}
+              page.form_with(:name => 'saveTeamSelection').radiobuttons.each do |radio|
+                name = page.search("label[for=\"#{radio.dom_id}\"]").first.text.strip
+                teams_by_name[name] = radio.value
+              end
+
+              name = choose "Select a team:", *teams_by_name.keys
+              @team ||= teams_by_name[name]
             end
           end
         end
